@@ -1,8 +1,32 @@
-# React + Vite
+# CampWare - Campground CMS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+There are a few things that CampWare will be able to do as an MVP:
 
-Currently, two official plugins are available:
+    1. Users can:
+        Register with CampWare
+        Login / Logout with Authentication
+        Search for a campsite within a campground
+        Add information to their profile
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    2. Campground Owners can:
+        Register as an Admin
+        Update campground information
+        Add a campsite within the campground
+        Delete a campsite or campground
+    
+    3. List available Campgrounds & Campsites
+    4. Filter & Sort results
+
+
+
+    For this project I will be using:
+        FrontEnd: Vite, React, Redux and React-Boostrap
+        BackEnd: Express, Sequelize and Postgres
+
+
+Instructions for running this on your local computer:
+
+```
+TODO
+
+```
