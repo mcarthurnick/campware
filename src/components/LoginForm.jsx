@@ -1,17 +1,36 @@
 import { Button, Form } from 'react-bootstrap'
 import { useNavigate } from "react-router-dom"
-
+import axios from 'axios'
+import { useDispatch } from 'react-redux'
 
 const LoginForm = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     
     const submitHandler = e => {
         e.preventDefault()
-        
-        console.log('email:', e.target[0].value)
-        console.log('password:', e.target[1].value)
-        
-        navigate('/home')
+
+        let user = {
+            email: e.target[0].value,
+            password: e.target[1].value
+        }
+
+        axios.post('/api/login', user)
+            .then(response => {
+                console.log('response', response)
+                if(response){
+                    dispatch({
+                        type: 'SET_USER', 
+                        payload : response.data 
+                      })
+                      
+                    navigate('/home')
+                }
+                else {
+                    console.log('error in submithandler')
+                }
+            })
+
 
     }
     
