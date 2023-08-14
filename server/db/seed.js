@@ -16,7 +16,8 @@ const newUser = await User.create({
     password: bcrypt.hashSync(password, salt),
     firstName: 'Nick',
     lastName: 'Mac', 
-    isAdmin: true
+    isAdmin: true, 
+    userId: 1
 })
 
 const newCampground = await Campground.create({
@@ -28,10 +29,11 @@ const newCampground = await Campground.create({
     campState: 'UT',
     campZip: 84737,
     campPhone: '435-673-2970',
-    campLogo: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.stgeorgervpark.com%2F&psig=AOvVaw3dm3Mhfo-X1Q5bDcos4Abp&ust=1691688539543000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCJjwwIWN0IADFQAAAAAdAAAAABAE',
+    campLogo: 'https://www.stgeorgervpark.com/file/60a2321b-5945-4775-a336-c329f43a4526',
     campWebsite: 'https://www.stgeorgervpark.com/',
     campImages: ['https://www.roverpass.com/system/pictures/images/000/043/481/full/1195.png?1495135830', 'https://www.roverpass.com/system/pictures/images/000/043/482/full/1195-1.png?1495135794'],
     campAmenities: ['Swimming pool', 'Fire pits', 'Pet Friendly'],
+    userId: 1
 })
 
 const newCampsite= await Campsite.create({

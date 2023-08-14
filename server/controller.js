@@ -1,4 +1,4 @@
-import { User, Campground} from './db/model.js'
+import { User, Campground, Campsite} from './db/model.js'
 import bcrypt from 'bcryptjs';
 
 
@@ -14,7 +14,7 @@ const routeFunctions = {
         })
 
 
-        res.json(registerUser)
+        res.json('Registration Successful!')
     },
     loginUser: async (req, res) => {
 
@@ -35,6 +35,7 @@ const routeFunctions = {
     },
     createCampground: async (req, res) => {
         const {campName, campAddress, campCity, campState, campZip, campPhone, campWebsite, campAmenities, campLogo, campImages, userId} = req.body;
+
         const createCamp = await Campground.create({
             campName, 
             campAddress,
@@ -48,8 +49,49 @@ const routeFunctions = {
             campImages,
             userId
         })
-        res.json(createCamp)
-    }
+        const campgrounds = await Campground.findAll({where : { userId: req.session.user.userId}});
+        res.json(campgrounds)
+    },
+
+    createCampsite: async  (req, res) => {
+        console.log('REQ.BODY', req.body);
+        const {siteNumber, siteDescription, siteType, rvMaxLength, siteImages, siteAmenities, campId} = req.body;
+
+        const createSite = await Campsite.create({
+            siteNumber, 
+            siteDescription, 
+            siteType, 
+            rvMaxLength,
+            siteImages,
+            siteAmenities, 
+            campId
+        })
+
+        const campsites = await Campsite.findAll({where: {campId: campId }})
+        res.json(campsites)
+    },
+
+    deleteCampground: async (req, res) => {
+        console.log('req.params', req.params)
+        const campId   = req.params['campId']
+
+        await Campground.destroy({
+            where: {
+                campId: campId
+            }
+        })
+        const campgrounds = await Campground.findAll({where : { userId: req.session.user.userId}});
+        res.json(campgrounds)
+    },
+
+    getAdminCampgrounds: async (req, res) => {
+        const campgrounds = await Campground.findAll({
+            where : { userId: req.session.user.userId}, 
+            include: { model: Campsite }
+        });
+
+        res.json(campgrounds)
+    }, 
 
 }
 

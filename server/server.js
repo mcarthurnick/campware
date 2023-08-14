@@ -19,8 +19,7 @@ app.use(express.static(path.join(rootDir, "public")))
 app.use(session({
     secret: 'macdaddy',
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
+    saveUninitialized: true
   }))
 
 ViteExpress.config({ printViteDevServerHost: true });
@@ -28,7 +27,12 @@ ViteExpress.config({ printViteDevServerHost: true });
 const {
     createUser,
     loginUser, 
-    createCampground
+    createCampground,
+    getAdminCampgrounds,
+    deleteCampground, 
+    getAllCampsites, 
+    createCampsite
+
     } = routeFunctions;
 
 
@@ -37,10 +41,13 @@ app.get('/api/auth', (req, res) => {
 });
 
 app.post('/api/register', createUser );
-
 app.post('/api/login', loginUser);
 
+//app.get('/api/campsites/:campId', getAllCampsites)
+app.get('/api/campgrounds', getAdminCampgrounds);
 app.post('/api/create-camp', createCampground);
+app.post('/api/create-site', createCampsite)
+app.delete('/api/delete/:campId', deleteCampground)
 
 
 const port = process.env.PORT || 8080;
