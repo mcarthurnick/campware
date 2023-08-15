@@ -4,4 +4,5 @@
     width: 100%; /* Full width */
     box-shadow: 0 0.2rem 0.25rem rgba(0, 0, 0, 0.2);
     left: 0px;
+    z-index: 1;
 }

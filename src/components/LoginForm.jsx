@@ -17,7 +17,6 @@ const LoginForm = () => {
 
         axios.post('/api/login', user)
             .then(response => {
-                console.log('response', response)
                 if(response){
                     dispatch({
                         type: 'SET_USER', 

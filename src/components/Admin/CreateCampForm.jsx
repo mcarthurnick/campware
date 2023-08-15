@@ -1,26 +1,25 @@
 import { Button, Form, Container, Row, Col} from 'react-bootstrap';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 
 const CreateCampgroundForm = (props) => {
-    const currUser = useSelector(state => state.auth.userInfo);
+    const dispatch = useDispatch();
     const {user, toggle} = props;
 
 
 
     const submitHandler = e => {
         e.preventDefault()
-        console.log('hit!', e.target[0].value)
 
         let campground = {
             campName: e.target[0].value,
-            campAddress: e.target[1].value,
-            campCity: e.target[2].value,
-            campState: e.target[3].value,
-            campZip: e.target[4].value,
-            campPhone: e.target[5].value,
-            campWebsite: e.target[6].value,
+            campWebsite: e.target[1].value,
+            campAddress: e.target[2].value,
+            campCity: e.target[3].value,
+            campState: e.target[4].value,
+            campZip: e.target[5].value,
+            campPhone: e.target[6].value,
             campAmenities: [e.target[7].value],
             campLogo: e.target[8].value,
             campImages: [e.target[9].value],
@@ -28,19 +27,16 @@ const CreateCampgroundForm = (props) => {
 
         }
 
-        console.log('campground', campground)
-
         axios.post('/api/create-camp', campground)
             .then(response => {
                 console.log('response', response)
                 if(response){
                     toggle()
-                    // dispatch({
-                    //     type: 'SET_USER', 
-                    //     payload : response.data 
-                    //   })
+                    dispatch({
+                        type: 'SET_CAMPGROUNDS',
+                        payload: response.data
+                    }) 
                       
-                    // navigate('/home')
                 }
                 else {
                     console.log('error in submithandler')

@@ -1,5 +1,5 @@
 import { Card, Button, Col } from 'react-bootstrap'
-import './DashCard.css';
+import '../styles/DashCard.css';
 const DashCard = (props) => {
     const {title, description, value } = props;
     return (

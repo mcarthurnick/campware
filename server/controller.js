@@ -33,6 +33,11 @@ const routeFunctions = {
 
 
     },
+
+    logoutUser: async (req, res) => {
+        req.session.destroy
+        res.json('Session Ended...')
+    },
     createCampground: async (req, res) => {
         const {campName, campAddress, campCity, campState, campZip, campPhone, campWebsite, campAmenities, campLogo, campImages, userId} = req.body;
 
@@ -72,7 +77,6 @@ const routeFunctions = {
     },
 
     deleteCampground: async (req, res) => {
-        console.log('req.params', req.params)
         const campId   = req.params['campId']
 
         await Campground.destroy({
@@ -92,6 +96,21 @@ const routeFunctions = {
 
         res.json(campgrounds)
     }, 
+
+    getAllCampFeed: async (req, res) => {
+        const campGroundSites = await Campground.findAll({ 
+            attributes: { exclude: ['user']}, 
+            include: { model: Campsite }
+        })
+        const campsites = await Campsite.findAll()
+
+        const feed = {
+            campgrounds: campGroundSites, 
+            campsites: campsites
+        }
+
+        res.json(feed)
+    }
 
 }
 

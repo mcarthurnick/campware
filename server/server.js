@@ -31,7 +31,9 @@ const {
     getAdminCampgrounds,
     deleteCampground, 
     getAllCampsites, 
-    createCampsite
+    createCampsite, 
+    getAllCampFeed, 
+    logoutUser
 
     } = routeFunctions;
 
@@ -42,12 +44,15 @@ app.get('/api/auth', (req, res) => {
 
 app.post('/api/register', createUser );
 app.post('/api/login', loginUser);
+app.get('/api/logout', logoutUser)
 
 //app.get('/api/campsites/:campId', getAllCampsites)
 app.get('/api/campgrounds', getAdminCampgrounds);
 app.post('/api/create-camp', createCampground);
 app.post('/api/create-site', createCampsite)
 app.delete('/api/delete/:campId', deleteCampground)
+
+app.get('/api/camp-feed', getAllCampFeed)
 
 
 const port = process.env.PORT || 8080;
