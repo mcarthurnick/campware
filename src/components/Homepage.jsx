@@ -5,12 +5,12 @@ import { useSelector} from 'react-redux';
 
 const HomePage = () => {
     const currUser = useSelector(state => state.auth.userInfo);
-    
+
 
     return (
         <div>
             <Header />
-            {currUser.isAdmin ? <AdminDashboard /> : <CampgroundFeed />}
+            <CampgroundFeed />
         </div>
     )
 }

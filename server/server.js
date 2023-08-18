@@ -4,6 +4,11 @@ import morgan from 'morgan';
 import path from 'path';
 import url from 'url';
 import session from 'express-session'
+import multer from 'multer';
+import fileUpload from 'express-fileupload';
+
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
 
 import routeFunctions from './controller.js';
 
@@ -13,7 +18,7 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false, limit: '50mb'}))
 app.use(express.static(path.join(rootDir, "public")))
 
 app.use(session({
@@ -21,6 +26,8 @@ app.use(session({
     resave: false,
     saveUninitialized: true
   }))
+
+app.use(fileUpload());
 
 ViteExpress.config({ printViteDevServerHost: true });
 

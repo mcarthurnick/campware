@@ -18,12 +18,18 @@ const LoginForm = () => {
         axios.post('/api/login', user)
             .then(response => {
                 if(response){
+                    console.log('RESPONSE.DATA', response.data)
                     dispatch({
                         type: 'SET_USER', 
                         payload : response.data 
                       })
-                      
-                    navigate('/home')
+
+                    if(response.data.isAdmin === true){
+                        navigate('/dashboard')
+                    }
+                    else {
+                        navigate('/home')
+                    }
                 }
                 else {
                     console.log('error in submithandler')

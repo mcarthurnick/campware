@@ -2,7 +2,7 @@ import { Card, Button, Col } from 'react-bootstrap'
 import '../styles/DashCard.css';
 const CampsiteCard = (props) => {
     const {siteNumber, siteDescription, siteType, siteImages } = props.site;
-    console.log('props', props)
+
     return (
             <Col>
                 <Card className="text-center" style={{ width: '18rem'}}>

@@ -2,3 +2,17 @@
     text-align: center;
     font-size: 45px;
 }
+
+.siteImageIcon {
+    height: 100px;
+    width: 100px;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.campsiteRow {
+    border: 1px rgb(143, 143, 143) solid;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

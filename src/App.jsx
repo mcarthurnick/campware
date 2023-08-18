@@ -5,6 +5,7 @@ import HomePage from './components/Homepage'
 import RegisterForm from './components/Admin/Register'
 import CampgroundDetail from './components/Admin/CampgroundDetail'
 import AccountDetail from './components/AccountDetail'
+import AdminDashboard from './components/Admin/AdminDashboard'
 
 function App() {
   
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route index element={<LoginForm />}/>
         <Route path='/home' element={<HomePage />} />
+        <Route path='/dashboard' element={<AdminDashboard />} />
         <Route path='/account' element={<AccountDetail />} />
         <Route path='/register' element={<RegisterForm />} />
         <Route path='/campground/:id' element={<CampgroundDetail />} />

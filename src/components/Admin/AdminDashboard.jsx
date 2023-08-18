@@ -4,6 +4,7 @@ import { Container, Row, Col, Button} from 'react-bootstrap'
 import CreateCampgroundForm from './CreateCampForm';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios'
+import Header from '../Header'
 import CampgroundList from './CampgroundList'
 import '../styles/AdminDashboard.css'
 
@@ -38,6 +39,8 @@ const AdminDashboard = () => {
 
 
     return (
+        <>
+        <Header />
         <div className="dashboard-container">
             {!show &&
             <div>
@@ -62,6 +65,7 @@ const AdminDashboard = () => {
                 }
             </div>
         </div>
+        </>
     )
 }
 

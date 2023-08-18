@@ -113,8 +113,7 @@ Campground.init (
             type: DataTypes.STRING,
         },
         campImages: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
-            defaultValue: []
+            type: DataTypes.STRING,
         },
         campAmenities: {
             type: DataTypes.ARRAY(DataTypes.STRING),
