@@ -22,14 +22,13 @@ const CreateCampgroundForm = (props) => {
 
     function handleCampAmenities(amenity) {
         let items = campAmenities
-        console.log('items --->', items)
         if(items.includes(amenity)){
             items = items.filter(e => e !== amenity)
             setCampAmenities(items)
         }
         else {
-            console.log('items --->', [...items, amenity])
             items.push(amenity)
+            console.log('items --->', items[0])
             setCampAmenities(items)
 
         }
@@ -45,6 +44,7 @@ const CreateCampgroundForm = (props) => {
     const submitHandler = e => {
         e.preventDefault()
 
+
         let campground = {
             campName,
             campWebsite,
@@ -53,17 +53,43 @@ const CreateCampgroundForm = (props) => {
             campState,
             campZip,
             campPhone,
-            thing: ['hi'],
+            campAmenities,
+            userId: user,
             campLogo,
-            campImages,
-            userId: user
+            campImages
 
         }
 
         console.log('campground', campground)
 
+        //transformRequest: [(data, headers) => { let formData = new FormData(); Object.keys(data).forEach(attr => { formData.append(attr, data[attr]); }); return formData; }],
 
-        axios.post('/api/create-camp', campground, { headers: {"Content-Type": "multipart/form-data"} })
+
+        axios({
+            method: 'post',
+            url: '/api/create-camp',
+            data : {
+                campName: campName, 
+                campWebsite: campWebsite,
+                campAddress: campAddress,
+                campCity: campCity, 
+                campState: campState,
+                campZip: campZip, 
+                campPhone: campPhone, 
+                campAmenities: campAmenities,
+                campLogo: campLogo,
+                campImages: campImages, 
+                userId: user
+            },
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            transformRequest:[function (data, headers){
+                let formData = new FormData(); Object.keys(data).forEach(attr => { formData.append(attr, data[attr]); }); 
+                return formData;
+            }]
+
+                })
             .then(response => {
                 
                 if(response){

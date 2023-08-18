@@ -78,10 +78,12 @@ const routeFunctions = {
         res.json('Session Ended...')
     },
     createCampground:  async (req, res) => {
-        const {campName, campAddress, campCity, campState, campZip, campPhone, campWebsite, campAmenities: asdf, userId} = req.body;
-        const {campImages, campLogo} = req.files
-
+        const {campName, campAddress, campCity, campState, campZip, campPhone, campWebsite, campAmenities, userId} = req.body;
         console.log('req.body', req.body)
+        console.log('req.files',req.files)
+
+        let newAmentities = campAmenities.split(',');
+        let campgroundImages = [];
 
         // const location = await geocode(`${campAddress}, ${campCity}, ${campState} ${campZip}`)
         // console.log('location', location)
@@ -89,16 +91,16 @@ const routeFunctions = {
 
         const params = {
             Bucket: bucketName,
-            Key: campLogo.name, 
-            Body: campLogo.data,
-            ContentType: campLogo.mimetype
+            Key: req.files.campLogo.name, 
+            Body: req.files.campLogo.data,
+            ContentType: req.files.campLogo.mimetype
         }
 
         const params2 = {
             Bucket: bucketName,
-            Key: campImages.name, 
-            Body: campImages.data,
-            ContentType: campImages.mimetype
+            Key: req.files.campImages.name, 
+            Body: req.files.campImages.data,
+            ContentType: req.files.campImages.mimetype
         }
 
         const command = new PutObjectCommand(params)
@@ -107,22 +109,23 @@ const routeFunctions = {
         await s3.send(command)
         await s3.send(command2)
 
-        const logoUrl = `https://campware.s3.us-west-2.amazonaws.com/${campLogo.name}`
-        const campgroundImageUrl = `https://campware.s3.us-west-2.amazonaws.com/${campImages.name}`
+        const logoUrl = `https://campware.s3.us-west-2.amazonaws.com/${req.files.campLogo.name}`
+        const campgroundImageUrl = `https://campware.s3.us-west-2.amazonaws.com/${req.files.campImages.name}`
+        campgroundImages.push(campgroundImageUrl)
 
-            // await Campground.create({
-            //     campName, 
-            //     campAddress,
-            //     campCity, 
-            //     campState,
-            //     campZip,
-            //     campPhone,
-            //     campWebsite,
-            //     campAmenities,
-            //     campLogo: logoUrl,
-            //     campImages: campgroundImageUrl,
-            //     userId
-            // })
+            await Campground.create({
+                campName, 
+                campAddress,
+                campCity, 
+                campState,
+                campZip,
+                campPhone,
+                campWebsite,
+                campAmenities: newAmentities,
+                campLogo: logoUrl,
+                campImages: campgroundImages,
+                userId
+            })
 
         const campgrounds = await Campground.findAll({where : { userId: req.session.user.userId}});
         res.json(campgrounds)
@@ -130,7 +133,6 @@ const routeFunctions = {
 
     createCampsite: async (req, res) => {
         const {siteNumber, siteDescription, siteType, rvMaxLength, siteImages, siteAmenities, campId} = req.body;
-
 
 
 

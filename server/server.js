@@ -18,7 +18,7 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false, limit: '50mb'}))
+app.use(express.urlencoded({ extended: true, limit: '50mb'}))
 app.use(express.static(path.join(rootDir, "public")))
 
 app.use(session({
