@@ -62,8 +62,6 @@ const CreateCampgroundForm = (props) => {
 
         console.log('campground', campground)
 
-        //transformRequest: [(data, headers) => { let formData = new FormData(); Object.keys(data).forEach(attr => { formData.append(attr, data[attr]); }); return formData; }],
-
 
         axios({
             method: 'post',

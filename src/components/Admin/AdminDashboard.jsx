@@ -7,6 +7,8 @@ import axios from 'axios'
 import Header from '../Header'
 import CampgroundList from './CampgroundList'
 import '../styles/AdminDashboard.css'
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminDashboard = () => {
     const dispatch = useDispatch();
@@ -45,7 +47,7 @@ const AdminDashboard = () => {
             {!show &&
             <div>
                 <Row>
-                    <Button variant="primary" onClick={toggleForm} className="create-button">
+                    <Button variant="dark" onClick={toggleForm} className="create-button">
                         Create Campground
                     </Button>
                 </Row>

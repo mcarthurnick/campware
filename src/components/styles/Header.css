@@ -6,3 +6,13 @@
     left: 0px;
     z-index: 1;
 }
+
+.navIcon {
+    margin-right: 15px;
+    font-size: 20px;
+}
+
+.account-icon {
+    color: #FFA257;
+    margin-left: 20px;
+}

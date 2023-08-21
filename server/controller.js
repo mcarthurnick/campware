@@ -1,15 +1,9 @@
 import { User, Campground, Campsite} from './db/model.js'
 import bcrypt from 'bcryptjs';
-
 import NodeGeocoder from 'node-geocoder'
 
-import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
-//import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-// const clientParams = '';
-// const getObjectParams = '';
-// const client = new S3Client(clientParams);
-// const command = new GetObjectCommand(getObjectParams);
 
 
 import dotenv from 'dotenv'
@@ -36,10 +30,6 @@ const s3 = new S3Client({
 //     apiKey: process.env.GOOGLE_API_KEY
 // })
 
-//const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
-
-
-
 
 const routeFunctions = {
     createUser: async (req, res) => {
@@ -59,15 +49,20 @@ const routeFunctions = {
 
         const {email, password} = req.body;
         const user = await User.findOne({where : { email: email }});
-        
-        const isMatch = bcrypt.compareSync(password, user.password)
-
-        
-        if(isMatch){
-            req.session.user = user
-            res.json(user)
+        if(user){
+            const isMatch = bcrypt.compareSync(password, user.password)
+            if(isMatch){
+                req.session.user = user
+                res.json(user)
+            } else {
+                res
+                    .status(401)
+                    .json('Incorrect Password')
+            }
         } else {
-            res.json('Incorrect Password')
+            res
+            .status(401)
+            .json('Sorry we couldnt find that user.')
         }
 
 
@@ -79,8 +74,7 @@ const routeFunctions = {
     },
     createCampground:  async (req, res) => {
         const {campName, campAddress, campCity, campState, campZip, campPhone, campWebsite, campAmenities, userId} = req.body;
-        console.log('req.body', req.body)
-        console.log('req.files',req.files)
+
 
         let newAmentities = campAmenities.split(',');
         let campgroundImages = [];
@@ -132,17 +126,35 @@ const routeFunctions = {
     },
 
     createCampsite: async (req, res) => {
-        const {siteNumber, siteDescription, siteType, rvMaxLength, siteImages, siteAmenities, campId} = req.body;
+        const {siteNumber, siteDescription, siteType, rvMaxLength, siteAmenities, campId} = req.body;
 
+        console.log('req.body', req.body);
+        console.log('req.files', req.files)
 
+        let newSiteAmentities = siteAmenities.split(',');
+        let campsiteImages = [];
+
+        const siteparams = {
+            Bucket: bucketName,
+            Key: req.files.siteImages.name, 
+            Body: req.files.siteImages.data,
+            ContentType: req.files.siteImages.mimetype
+        }
+
+        const com = new PutObjectCommand(siteparams)
+
+        await s3.send(com)
+
+        const siteImageUrl = `https://campware.s3.us-west-2.amazonaws.com/${req.files.siteImages.name}`
+        campsiteImages.push(siteImageUrl)
 
         const createSite = await Campsite.create({
             siteNumber, 
             siteDescription, 
             siteType, 
             rvMaxLength,
-            siteImages,
-            siteAmenities, 
+            siteImages: campsiteImages,
+            siteAmenities: newSiteAmentities, 
             campId
         })
 

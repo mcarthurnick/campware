@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Header from '../Header'
-import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import '../styles/CampgroundDetail.css'
 import CampsiteCard from './CampsiteCard';
@@ -9,6 +9,7 @@ import CreateSiteForm from './CreateSiteForm';
 
 const CampgroundDetail = () => {
     //let params = useParams()
+    const navigate = useNavigate();
     const c = useSelector(state => state.campground.selectedCampground);
     const [show, setShow] = useState(false);
     const campSites = c.campsites.map((campsite) => {
@@ -21,6 +22,10 @@ const CampgroundDetail = () => {
         setShow(!show)
     }
 
+    function returnToDashboard(){
+        navigate('/dashboard')
+    }
+
 
 
     return (
@@ -29,6 +34,7 @@ const CampgroundDetail = () => {
             {!show &&
             <div>
             <div className="detail-container">
+                <Button onClick={returnToDashboard}>Back</Button>
                 <Row>
                         <Button variant="primary"  onClick={toggleForm} className="create-button">
                             Create Campsite

@@ -1,11 +1,18 @@
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, Image } from 'react-bootstrap'
 import { useNavigate } from "react-router-dom"
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import './styles/LoginForm.css'
 
 const LoginForm = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const redirectToRegister = () => {
+        navigate('/register')
+    }
     
     const submitHandler = e => {
         e.preventDefault()
@@ -18,7 +25,6 @@ const LoginForm = () => {
         axios.post('/api/login', user)
             .then(response => {
                 if(response){
-                    console.log('RESPONSE.DATA', response.data)
                     dispatch({
                         type: 'SET_USER', 
                         payload : response.data 
@@ -31,17 +37,34 @@ const LoginForm = () => {
                         navigate('/home')
                     }
                 }
-                else {
-                    console.log('error in submithandler')
-                }
             })
+            .catch(function (error) {
+                if (error.response) {
+                  toast.error(`${error.response.data}`, {
+                    position: toast.POSITION.TOP_LEFT,
+                    theme: "dark"
+                  });
+                } else if (error.request) {
+                    toast.error(`${error.request}`, {
+                        position: toast.POSITION.TOP_LEFT,
+                        theme: "dark"
+                      });
+                } else {
+                    toast.error(`${error.message}`, {
+                        position: toast.POSITION.TOP_LEFT,
+                        theme: "dark"
+                      });
+                }
+                console.log(error.config);
+              });
 
 
     }
     
     return (
         <div>
-            <h1>Login Form</h1>
+            <Image src="./src/assets/CampWare.png" height={200} width={200}/>
+            <ToastContainer />
             <Form onSubmit={e => submitHandler(e)}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
@@ -52,10 +75,16 @@ const LoginForm = () => {
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" placeholder="Password" />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button variant="dark" type="submit">
                     Login
                 </Button>
             </Form>
+            <div className="registerAccount">
+                <h6>Don't have an account?</h6>
+                <Button onClick={redirectToRegister} variant="light">
+                    Register
+                </Button>
+            </div>
         </div>
     )
 }

@@ -4,6 +4,7 @@ import axios from 'axios'
 import FeaturedCampgroundList from "./FeaturedCampgroundList";
 import CampsiteFeed from "./CampsiteFeed";
 
+
 const CampgroundFeed = () => {
     const dispatch = useDispatch();
 
@@ -21,7 +22,7 @@ const CampgroundFeed = () => {
     }, [])
     return (
         <>
-            Campground Feed
+
 
             <FeaturedCampgroundList />
 

@@ -1,14 +1,15 @@
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, Image } from 'react-bootstrap'
 import { useNavigate } from "react-router-dom"
 import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux'
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
-    const currUserInfo = useSelector(state => state.userInfo);
     const navigate = useNavigate();
     
     const registerUser = async (user) => {
         let result = await axios.post('/api/register', user);
+        console.log('result', result);
     }
 
     const submitHandler = e => {
@@ -20,13 +21,15 @@ const Register = () => {
             password: e.target[3].value
         }
         registerUser(user)
+
         navigate('/')
 
     }
 
     return (
         <>
-        <h1>Register Form</h1>
+        <Image src="./src/assets/CampWare.png" height={200} width={200}/>
+
         <Form onSubmit={e => submitHandler(e)}>
                 <Form.Group className="mb-3" controlId="formFirstName">
                     <Form.Label>First Name</Form.Label>
@@ -44,7 +47,7 @@ const Register = () => {
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" placeholder="Password" />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button variant="dark" type="submit">
                     Register
                 </Button>
             </Form>

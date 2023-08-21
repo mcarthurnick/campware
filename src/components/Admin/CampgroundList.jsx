@@ -42,8 +42,8 @@ const CampgroundList = (props) => {
         <Card.Text>
           {campCity}, {campState}
         </Card.Text>
-        <Button variant="danger" onClick={deleteCampground}>Delete</Button>
-        <Button variant="primary" onClick={clickDetailHandler}>Details</Button>
+        <Button variant="light" onClick={deleteCampground}>Delete</Button>
+        <Button variant="dark" onClick={clickDetailHandler}>Details</Button>
       </Card.Body>
     </Card>
     )

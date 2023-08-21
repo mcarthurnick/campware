@@ -4,11 +4,7 @@ import morgan from 'morgan';
 import path from 'path';
 import url from 'url';
 import session from 'express-session'
-import multer from 'multer';
 import fileUpload from 'express-fileupload';
-
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
 
 import routeFunctions from './controller.js';
 
