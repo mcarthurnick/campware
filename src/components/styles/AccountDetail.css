@@ -1,0 +1,27 @@
+.upload-image{
+    background-color: darkgray;
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+    border: 3px solid #FFA257;
+}
+
+.upload-image:hover {
+    background-color: rgb(157, 157, 157);
+    }
+
+.placeholder-icon {
+    top: 30%;
+    left: 37%;
+    position: absolute;
+}
+
+.placeholder-heading {
+    top: 64%;
+    left: 25%;
+    position: absolute;
+    color: #FFF;
+}
+

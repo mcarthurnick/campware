@@ -52,6 +52,14 @@ User.init(
         isAdmin: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
+        },
+        campsiteFavorites: {
+            type: DataTypes.ARRAY(DataTypes.INTEGER),
+            defaultValue: []
+        },
+        campgroundFavorites: {
+            type: DataTypes.ARRAY(DataTypes.INTEGER),
+            defaultValue: []
         }
 
     },
@@ -164,6 +172,10 @@ Campsite.init (
         siteAmenities: {
             type: DataTypes.ARRAY(DataTypes.STRING),
             defaultValue: [],
+            allowNull: false
+        }, 
+        sitePrice : {
+            type: DataTypes.INTEGER,
             allowNull: false
         }
     },

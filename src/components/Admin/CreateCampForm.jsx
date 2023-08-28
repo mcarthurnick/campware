@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import AmenitiesCheckbox from './AmenitiesCheckbox'
+import { toast, ToastContainer } from 'react-toastify';
 
 
 const CreateCampgroundForm = (props) => {
@@ -96,10 +97,17 @@ const CreateCampgroundForm = (props) => {
                         type: 'SET_CAMPGROUNDS',
                         payload: response.data
                     }) 
+                    toast.success(`Campground created successfully!`, {
+                        position: toast.POSITION.TOP_LEFT,
+                        theme: "dark"
+                      });
                       
                 }
                 else {
-                    console.log('error in submithandler')
+                    toast.error(`${error.response.data}`, {
+                        position: toast.POSITION.TOP_LEFT,
+                        theme: "dark"
+                      });
                 }
             })
 
@@ -108,6 +116,7 @@ const CreateCampgroundForm = (props) => {
 
     return (
         <>
+        <ToastContainer />
         <Form onSubmit={submitHandler} encType="multipart/form-data">
             <Row>
                 <Col>
@@ -170,10 +179,10 @@ const CreateCampgroundForm = (props) => {
                             <Form.Label>Select Image</Form.Label>
                             <Form.Control type="file"  name="image"  onChange={e => setCampImages(e.target.files[0])}/>
                         </Form.Group>
-                        <Button variant="danger" onClick={toggle}>
+                        <Button variant="light" onClick={toggle}>
                             Cancel
                         </Button>
-                        <Button variant="primary" type="submit">
+                        <Button variant="dark" type="submit">
                             Save Changes
                         </Button>
                     </Form>

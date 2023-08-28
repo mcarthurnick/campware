@@ -36,7 +36,10 @@ const {
     getAllCampsites, 
     createCampsite, 
     getAllCampFeed, 
-    logoutUser
+    logoutUser, 
+    updateUser, 
+    favoriteCampsite, 
+    updateCampsite
 
     } = routeFunctions;
 
@@ -48,12 +51,16 @@ app.get('/api/auth', (req, res) => {
 app.post('/api/register', createUser );
 app.post('/api/login', loginUser);
 app.get('/api/logout', logoutUser)
+app.put('/api/user', updateUser)
+app.put('/api/user/favorite', favoriteCampsite)
 
 //app.get('/api/campsites/:campId', getAllCampsites)
 app.get('/api/campgrounds', getAdminCampgrounds);
 app.post('/api/create-camp', createCampground);
 app.post('/api/create-site', createCampsite)
 app.delete('/api/delete/:campId', deleteCampground)
+app.put('/api/campsite', updateCampsite)
+// TO DO app.put('/api/campground', updateCampground)
 
 app.get('/api/camp-feed', getAllCampFeed)
 

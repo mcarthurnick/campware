@@ -1,9 +1,6 @@
 const initialState = {
     loading: false,
     userInfo: {}, // for user object
-    userToken: null, // for storing the token
-    error: null,
-    success: false, // for monitoring the registration process.
   }
 
 const authReducer = (state = initialState, action) => {

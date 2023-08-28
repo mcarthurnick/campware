@@ -1,26 +1,39 @@
-import { useSelector } from 'react-redux';
-import CampsiteCard from './Admin/CampsiteCard';
 import CampsiteCardLong from './CampsiteCardLong';
 import './styles/DashCard.css';
+import './styles/CampsiteFeed.css'
+import { Row } from 'react-bootstrap';
 
-const CampsiteFeed = () => {
-    const campsites = useSelector(state => state.feed.campgrounds.campsites);
+
+const CampsiteFeed = (props) => {
+    const { campsites, campsiteFavorites } = props
+
+    function checkFavorite(siteID, campsiteFavorites){
+        if(campsiteFavorites.includes(siteID)){
+            return true
+        }
+        return false
+    }
 
 
     return (
         <>
-        {campsites &&
-            <ul>
-            {campsites.map((campsite) => {
-            console.log(campsite)
-                    return (
-                        // <CampsiteCard key={campsite.siteId} site={campsite}/>
-                        <CampsiteCardLong key={campsite.siteId} site={campsite}/>
-                    )
-                })
+        <Row>
+            {campsites &&
+                <ul>
+                {campsites.map((campsite) => {
+                    let isFavorite = false
+                    if(campsiteFavorites){
+                        isFavorite = checkFavorite(campsite.siteID, campsiteFavorites)
+                    }
+                    
+                        return (
+                            <CampsiteCardLong key={campsite.siteID} isFavorite={isFavorite} site={campsite}/>
+                        )
+                    })
+                }
+                </ul>
             }
-            </ul>
-        }
+        </Row>
         </>
     )
 }

@@ -22,7 +22,7 @@ const Header = () => {
             <Navbar bg="dark" data-bs-theme="dark">
                 <Container>
                 <Navbar.Brand onClick={handleRoute}>
-                <img src="./src/assets/campware-logo.png" />    
+                <img src="https://campware.s3.us-west-2.amazonaws.com/campware-logo.png" />    
                 </Navbar.Brand>
                         <Nav className="ml-auto">
                         <Nav.Link href="/account">

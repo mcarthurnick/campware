@@ -6,6 +6,9 @@ import RegisterForm from './components/Admin/Register'
 import CampgroundDetail from './components/Admin/CampgroundDetail'
 import AccountDetail from './components/AccountDetail'
 import AdminDashboard from './components/Admin/AdminDashboard'
+import CampsiteDetail from './components/CampsiteDetail'
+import AdminCampsiteDetail from './components/Admin/AdminCampsiteDetail'
+
 
 function App() {
   
@@ -19,6 +22,8 @@ function App() {
         <Route path='/account' element={<AccountDetail />} />
         <Route path='/register' element={<RegisterForm />} />
         <Route path='/campground/:id' element={<CampgroundDetail />} />
+        <Route path='/campsite/:id' element={<CampsiteDetail />} />
+        <Route path='/dashboard/campsite/:id' element={<AdminCampsiteDetail />} />
       </Routes>
       
     </div>

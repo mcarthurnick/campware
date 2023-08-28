@@ -2,8 +2,8 @@ import { Container, Row, Col, Card, Button} from 'react-bootstrap'
 import {  useSelector } from 'react-redux';
 import './styles/Feed.css'
 
-const FeaturedCampgroundList = () => {
-    const campgrounds = useSelector(state => state.feed.campgrounds.campgrounds);
+const FeaturedCampgroundList = (props) => {
+    const { campgrounds } = props;
 
 
     return (
@@ -14,7 +14,7 @@ const FeaturedCampgroundList = () => {
                 <Row>
                     {campgrounds.map((campground) => {
                         return (
-                            <Col>
+                            <Col key={campground.campId}>
                                 <Card style={{ width: '18rem'}} >
                                     <Card.Img variant="top" src={campground.campLogo} height={200} width={200}/>
                                     <Card.Body>

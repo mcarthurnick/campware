@@ -12,6 +12,7 @@ const CampgroundDetail = () => {
     const navigate = useNavigate();
     const c = useSelector(state => state.campground.selectedCampground);
     const [show, setShow] = useState(false);
+    
     const campSites = c.campsites.map((campsite) => {
         return (
             <CampsiteCard key={campsite.siteNumber} site={campsite}/>

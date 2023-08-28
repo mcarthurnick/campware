@@ -5,20 +5,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import AmenitiesCheckbox from './AmenitiesCheckbox';
 
 
-const CreateSiteForm = (props) => {
+const EditSiteForm = (props) => {
     const dispatch = useDispatch();
-    const c = useSelector(state => state.campground.selectedCampground);
-    const [siteNumber, setSiteNumber] = useState('')
-    const [siteDescription, setSiteDescription] = useState('')
-    const [siteType, setSiteType] = useState('');
-    const [rvMaxLength, setRvMaxLength] = useState(0);
-    const [siteImages, setSiteImages] = useState({});
-    const [siteAmenities, setSiteAmenities] = useState([]);
-    const [sitePrice, setSitePrice] = useState(0)
+    const c = useSelector(state => state.campground.selectedCampsite);
+    const [siteNumber, setSiteNumber] = useState(c.siteNumber)
+    const [siteDescription, setSiteDescription] = useState(c.siteDescription)
+    const [siteType, setSiteType] = useState(c.siteType);
+    const [rvMaxLength, setRvMaxLength] = useState(c.rvMaxLength);
+    const [siteImages, setSiteImages] = useState(c.siteImages);
+    const [siteAmenities, setSiteAmenities] = useState(c.siteAmenities);
+    const [sitePrice, setSitePrice] = useState(c.sitePrice)
 
     const {toggle} = props;
 
-    const allAmenities = ['Fire Pit', 'Close to bathrooms', 'Pull-Thru Site', 'Back-In Site', 'Wifi', 'Cable Hookup', 'Picnic Table', 'Full Electrical Hook-up', 'Potable Water', 'Fully Shaded Site', 'Partial Shaded Site', 'No Shade over site']
+    const allAmenities = ['Fire pit', 'Close to dog park', 'Pull-Thru Site', 'Back-In Site', 'Wifi', 'Cable Hookup', 'Picnic Table', 'Full Electrical Hook-up', 'Potable Water', 'Very Shady', 'Not Shaded']
 
     function handleSiteAmenities(amenity) {
         let items = siteAmenities
@@ -28,7 +28,7 @@ const CreateSiteForm = (props) => {
         }
         else {
             items.push(amenity)
-            console.log('items --->', items[0])
+            console.log('items --->', items)
             setSiteAmenities(items)
 
         }
@@ -41,8 +41,8 @@ const CreateSiteForm = (props) => {
 
 
         axios({
-            method: 'post',
-            url: '/api/create-site',
+            method: 'put',
+            url: '/api/campsite',
             data: {
                 siteNumber: siteNumber, 
                 siteDescription: siteDescription, 
@@ -51,6 +51,7 @@ const CreateSiteForm = (props) => {
                 siteImages: siteImages, 
                 siteAmenities: siteAmenities,
                 sitePrice: sitePrice,
+                siteID: c.siteID,
                 campId: c.campId
             },
             headers: {
@@ -85,13 +86,13 @@ const CreateSiteForm = (props) => {
                 <Col>
                     <Form.Group className="mb-3" controlId="siteName">
                         <Form.Label>Site Number</Form.Label>
-                        <Form.Control type="text" onChange={e => setSiteNumber(e.target.value)}/>
+                        <Form.Control type="text" onChange={e => setSiteNumber(e.target.value)} defaultValue={siteNumber}/>
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group className="mb-3" controlId="siteDescription">
                         <Form.Label>Description</Form.Label>
-                        <Form.Control type="text" onChange={e => setSiteDescription(e.target.value)}/>
+                        <Form.Control type="text" onChange={e => setSiteDescription(e.target.value)} defaultValue={siteDescription}/>
                     </Form.Group>   
                 </Col>
             </Row>
@@ -99,19 +100,19 @@ const CreateSiteForm = (props) => {
                 <Col>
                     <Form.Group className="mb-3" controlId="siteType">
                         <Form.Label>Site Type</Form.Label>
-                        <Form.Control type="text"  onChange={e => setSiteType(e.target.value)}/>
+                        <Form.Control type="text"  onChange={e => setSiteType(e.target.value)} defaultValue={siteType}/>
                     </Form.Group>  
                 </Col>
                 <Col>
                     <Form.Group className="mb-3" controlId="rvMaxLength">
                         <Form.Label>Max RV Length</Form.Label>
-                        <Form.Control type="text" onChange={e => setRvMaxLength(e.target.value)}/>
+                        <Form.Control type="text" onChange={e => setRvMaxLength(e.target.value)} defaultValue={rvMaxLength}/>
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group className="mb-3" controlId="sitePrice">
                         <Form.Label>Site Price</Form.Label>
-                        <Form.Control type="text" onChange={e => setSitePrice(e.target.value)}/>
+                        <Form.Control type="text" onChange={e => setSitePrice(e.target.value)} defaultValue={sitePrice}/>
                     </Form.Group>
                 </Col>
                 </Row>
@@ -123,9 +124,17 @@ const CreateSiteForm = (props) => {
                         <Form.Group className="mb-3" controlId="siteAmenities">
                             <Form.Label>Amenities</Form.Label>
                             <div>
-                                {allAmenities.map((amenity) => (
-                                    <AmenitiesCheckbox name={amenity} key={amenity} handleAmenities={handleSiteAmenities}/>
-                                ))}
+                                {allAmenities.map((amenity) => {
+                                    if(siteAmenities.includes(amenity)){
+                                        return (
+                                            <AmenitiesCheckbox name={amenity} checked={true} key={amenity} handleAmenities={handleSiteAmenities}/>
+                                        )
+                                    } else {
+                                        return (
+                                            <AmenitiesCheckbox name={amenity} checked={false} key={amenity} handleAmenities={handleSiteAmenities}/> 
+                                        )
+                                    }
+                            })}
                             </div>
                         </Form.Group>
 
@@ -141,4 +150,4 @@ const CreateSiteForm = (props) => {
     )
 }
 
-export default CreateSiteForm;
+export default EditSiteForm;

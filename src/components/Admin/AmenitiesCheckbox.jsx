@@ -1,11 +1,14 @@
+import { useState } from 'react'
 import { Form } from 'react-bootstrap'
 
 
 
 const AmenitiesCheckbox = (props) => {
     const {name, handleAmenities} = props;
+    const [checked, setIsChecked] = useState(props.checked)
 
     function handleCheckbox(){
+        setIsChecked(!checked)
         handleAmenities(name)
 
     }
@@ -14,6 +17,7 @@ const AmenitiesCheckbox = (props) => {
     return (
         <>
             <Form.Check
+                checked={checked}
                 inline
                 label={name}
                 name={name}

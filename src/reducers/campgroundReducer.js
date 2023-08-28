@@ -1,7 +1,8 @@
 const initialState = {
     campgrounds: [],
     loading: true, 
-    selectedCampground: {}
+    selectedCampground: {},
+    selectedCampsite: {}
 }
 
 
@@ -31,6 +32,13 @@ const campgroundReducer = (state = initialState, action) => {
                     }
                 }
                 return currCampsites
+
+        case 'SET_SELECTED_CAMPSITE': 
+                let setSelectedCampsite = {
+                    ...state,
+                    selectedCampsite: action.payload
+                }
+                return setSelectedCampsite
         
         default:
             return state

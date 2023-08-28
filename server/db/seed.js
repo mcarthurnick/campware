@@ -18,7 +18,8 @@ const newUser = await User.create({
     password: bcrypt.hashSync(password, salt),
     firstName: 'Nick',
     lastName: 'Mac', 
-    isAdmin: true, 
+    isAdmin: true,
+    campsiteFavorites: [2],
     userId: 1
 })
 
@@ -27,7 +28,9 @@ const newUser2 = await User.create({
     password: bcrypt.hashSync(password2, salt),
     firstName: 'Nicholas',
     lastName: 'McArthur', 
-    isAdmin: false, 
+    isAdmin: false,
+    campsiteFavorites: [],
+    campgroundFavorites: [1],
     userId: 2
 })
 
@@ -70,6 +73,7 @@ const newCampsite= await Campsite.create({
     rvMaxLength: 26,
     siteImages: ['https://togorv.com/wp-content/uploads/2021/02/shutterstock_1066771271.jpg'],
     siteAmenities: ['Fire pit', 'Very Shady'],
+    sitePrice: 200,
     campId: 1
 })
 
@@ -80,6 +84,7 @@ const anotherCampsite= await Campsite.create({
     rvMaxLength: 50,
     siteImages: ['https://togorv.com/wp-content/uploads/2021/02/shutterstock_1066771271.jpg'],
     siteAmenities: ['Fire pit', 'Not Shaded', 'Close to dog park'],
+    sitePrice: 55,
     campId: 1
 })
 
@@ -90,6 +95,7 @@ const anotherCampsite2 = await Campsite.create({
     rvMaxLength: 50,
     siteImages: ['https://togorv.com/wp-content/uploads/2021/02/shutterstock_1066771271.jpg'],
     siteAmenities: ['Fire pit', 'Not Shaded', 'Close to dog park'],
+    sitePrice: 65,
     campId: 2
 })
 
@@ -100,6 +106,7 @@ const anotherCampsite3 = await Campsite.create({
     rvMaxLength: 5,
     siteImages: ['https://togorv.com/wp-content/uploads/2021/02/shutterstock_1066771271.jpg'],
     siteAmenities: ['Not Shaded', 'Close to dog park'],
+    sitePrice: 45,
     campId: 2
 })
 

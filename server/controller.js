@@ -33,18 +33,63 @@ const s3 = new S3Client({
 
 const routeFunctions = {
     createUser: async (req, res) => {
-        const {firstName, lastName, email, password} = req.body;
+        const {firstName, lastName, email, password, isAdmin} = req.body;
         const salt = bcrypt.genSaltSync(10);
         const registerUser = await User.create({
             firstName, 
             lastName, 
             email, 
-            password: bcrypt.hashSync(password, salt)
+            password: bcrypt.hashSync(password, salt), 
+            isAdmin
         })
 
 
         res.json('Registration Successful!')
     },
+
+    updateUser: async (req, res) => {
+        const { firstName, lastName, city, state, zipcode, password, userId } = req.body;
+
+        const salt = bcrypt.genSaltSync(10);
+
+        let profileImageUrl = ''
+
+        const user = await User.findByPk(userId)
+
+        if(req.files){
+            const profimage = {
+                Bucket: bucketName,
+                Key: req.files.profileImage.name, 
+                Body: req.files.profileImage.data,
+                ContentType: req.files.profileImage.mimetype
+            }
+
+            const comm = new PutObjectCommand(profimage)
+
+            await s3.send(comm)
+            profileImageUrl = `https://campware.s3.us-west-2.amazonaws.com/${req.files.profileImage.name}`
+    
+            console.log('profileImageUrl', profileImageUrl)  
+        }
+
+        user.firstName = firstName
+        user.lastName = lastName
+        user.city = city
+        user.state = state
+        user.zipcode = zipcode
+        user.password = password ? bcrypt.hashSync(password, salt) : user.password
+        user.profileImage = req.files ? profileImageUrl : user.profileImage
+
+        await user.save()
+
+        res
+            .status(200)
+            .json(user)
+    
+
+
+    },
+
     loginUser: async (req, res) => {
 
         const {email, password} = req.body;
@@ -71,6 +116,24 @@ const routeFunctions = {
     logoutUser: async (req, res) => {
         req.session.destroy
         res.json('Session Ended...')
+    },
+
+    favoriteCampsite: async(req, res) => {
+        const {siteID, userId} = req.body
+
+        const user = await User.findByPk(userId)
+
+        if(user.campsiteFavorites.includes(siteID)){
+            let index = user.campsiteFavorites.indexOf(siteID)
+            let newArr = user.campsiteFavorites
+            newArr.splice(index, 1)
+            await user.update({ ...user, campsiteFavorites: newArr})
+            res.json(user)
+        } else {
+            await user.update({ ...user, campsiteFavorites: [...user.campsiteFavorites, siteID]})
+            res.json(user)
+        }
+
     },
     createCampground:  async (req, res) => {
         const {campName, campAddress, campCity, campState, campZip, campPhone, campWebsite, campAmenities, userId} = req.body;
@@ -128,9 +191,6 @@ const routeFunctions = {
     createCampsite: async (req, res) => {
         const {siteNumber, siteDescription, siteType, rvMaxLength, siteAmenities, campId} = req.body;
 
-        console.log('req.body', req.body);
-        console.log('req.files', req.files)
-
         let newSiteAmentities = siteAmenities.split(',');
         let campsiteImages = [];
 
@@ -162,6 +222,50 @@ const routeFunctions = {
         res.json(campsites)
     },
 
+    updateCampsite: async (req, res) => {
+        const { siteID, siteNumber, siteDescription , siteType, rvMaxLength, siteAmenities, sitePrice, siteImages, campId } = req.body;
+        console.log('req.body', req.body)
+
+        let siteImageUrl = ''
+        let newAmenities= siteAmenities.split(',')
+        let newSiteImages = []
+        console.log('newAmenities', newAmenities)
+        const site = await Campsite.findByPk(siteID)
+
+        console.log('site', site)
+
+        if(req.files){
+            const siteimage = {
+                Bucket: bucketName,
+                Key: req.files.siteImages.name, 
+                Body: req.files.siteImages.data,
+                ContentType: req.files.siteImages.mimetype
+            }
+
+            const comm = new PutObjectCommand(siteimage)
+
+            await s3.send(comm)
+            siteImageUrl = `https://campware.s3.us-west-2.amazonaws.com/${req.files.siteImages.name}`
+    
+            newSiteImages.push(siteImageUrl)
+            console.log('siteImageUrl', siteImageUrl)  
+        }
+
+        newSiteImages.push(siteImages)
+
+        site.siteNumber = siteNumber
+        site.siteDescription = siteDescription
+        site.siteType = siteType
+        site.rvMaxLength = rvMaxLength
+        site.siteAmenities = newAmenities
+        site.sitePrice = sitePrice
+        site.siteImages = newSiteImages
+
+        await site.save()
+
+        const campsites = await Campsite.findAll({where: {campId: campId }})
+        res.json(campsites)
+    },
     deleteCampground: async (req, res) => {
 
         const campId   = req.params['campId']

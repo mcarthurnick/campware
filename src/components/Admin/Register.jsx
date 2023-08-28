@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Button, Form, Image } from 'react-bootstrap'
 import { useNavigate } from "react-router-dom"
 import axios from 'axios'
@@ -6,10 +7,15 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
     const navigate = useNavigate();
+    const [isAdmin, setIsAdmin] = useState(false)
     
     const registerUser = async (user) => {
         let result = await axios.post('/api/register', user);
-        console.log('result', result);
+
+    }
+
+    function toggleAdmin(){
+       setIsAdmin(!isAdmin) 
     }
 
     const submitHandler = e => {
@@ -18,8 +24,11 @@ const Register = () => {
             firstName: e.target[0].value,
             lastName: e.target[1].value, 
             email: e.target[2].value, 
-            password: e.target[3].value
+            password: e.target[3].value,
+            isAdmin: isAdmin
         }
+
+        console.log('user', user)
         registerUser(user)
 
         navigate('/')
@@ -47,6 +56,7 @@ const Register = () => {
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" placeholder="Password" />
                 </Form.Group>
+                <Form.Check type="checkbox" label="Are you a campground owner?" onClick={toggleAdmin}/>
                 <Button variant="dark" type="submit">
                     Register
                 </Button>
